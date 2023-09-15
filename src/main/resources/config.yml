@@ -1,0 +1,29 @@
+database:
+  table-name: "orbital"
+  path: "players"
+  save-interval: 2 # Interval for saving database in minutes
+
+start-money: 0
+
+commands:
+  earn:
+    # %time% placeholder will be replaced by remaining time until command can be used again
+    cooldown: "&4You have to wait for %time% seconds until command can be used again"
+    # %money% placeholder will be replaced by amount of money given
+    money-given: "&aYou have received %money%"
+
+  set-balance:
+    positive-amount: "&4Amount must be positive"
+    incorrect-amount-input: "&4Incorrect amount input - see /setbal for help"
+    completed: "Balance for %target_player% has been updated to: &a%new_amount%"
+
+  give:
+    incorrect-amount-input: "&4Incorrect amount input - see /give for help"
+    self-usage: "&4Cannot give yourself money"
+    cannot-afford: "&4You cannot afford this - see /bal to check your balance"
+    given: "You have given %target_player% &a %amount%"
+    received: "You have been given &a %amount% by %sender_player%"
+
+  balance:
+    no-target: "Balance: &a %balance%"
+    target: "Balance for %target_player%: &a %balance%"

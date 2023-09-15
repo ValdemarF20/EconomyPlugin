@@ -1,0 +1,4 @@
+name: OrbitalTesting
+version: '${version}'
+main: net.foster.testing.orbital.OrbitalTesting
+api-version: '1.18'

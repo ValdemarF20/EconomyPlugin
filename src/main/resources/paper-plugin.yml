@@ -1,0 +1,6 @@
+name: OrbitalTesting
+version: '${version}'
+main: net.foster.testing.orbital.OrbitalTesting
+description: "Economy plugin for Orbital"
+api-version: '1.18'
+authors: ["Foster"]
