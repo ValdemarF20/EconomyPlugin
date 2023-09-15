@@ -102,7 +102,7 @@ public class PlayerCommands extends BaseCommand {
                             .replace("%amount%", String.valueOf(amount))));
 
             econ.depositPlayer(target, amount);
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(commandsSection.getString("give.received"))
                             .replace("%amount%", String.valueOf(amount))
                             .replace("%sender_player%", sender.getName())));
@@ -133,12 +133,12 @@ public class PlayerCommands extends BaseCommand {
             return;
         }
 
-        double newAmount = amount - econ.getBalance(target);
-        econ.depositPlayer(target, newAmount);
+        double balanceChange = amount - econ.getBalance(target);
+        econ.depositPlayer(target, balanceChange);
         target.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 Objects.requireNonNull(commandsSection.getString("set-balance.completed"))
                         .replace("%target_player%", target.getName())
-                        .replace("%new_amount%", String.valueOf(newAmount))));
+                        .replace("%new_amount%", String.valueOf(numberFormatUS.format(amount)))));
     }
 
     @CommandAlias("earn")
