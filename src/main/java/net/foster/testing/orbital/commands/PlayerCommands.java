@@ -70,14 +70,17 @@ public class PlayerCommands extends BaseCommand {
     @CommandAlias("give")
     @Subcommand("target amount")
     @Syntax("<target> <amount> &e - Give target player money")
-    public void onGive(Player sender, String[] args) {
-        Player target = Bukkit.getPlayer(args[0]);
-        if(target == null) {
+    public void onGive(Player sender, OnlinePlayer targetOnlinePlayer, String[] args) {
+        if(targetOnlinePlayer == null) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(commandsSection.getString("give.target-not-specified"))));
             return;
         }
+        Player target = targetOnlinePlayer.getPlayer();
+
         double amount;
         try {
-            amount = Double.parseDouble(args[1]);
+            amount = Double.parseDouble(args[0]);
         } catch(NumberFormatException ignored) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(commandsSection.getString("give.incorrect-amount-input"))));
@@ -95,16 +98,18 @@ public class PlayerCommands extends BaseCommand {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(commandsSection.getString("give.cannot-afford"))));
         } else {
+            String amountFormatted = numberFormatUS.format(amount);
+
             econ.withdrawPlayer(sender, amount);
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(commandsSection.getString("give.given"))
                             .replace("%target_player%", target.getName())
-                            .replace("%amount%", String.valueOf(amount))));
+                            .replace("%amount%", amountFormatted)));
 
             econ.depositPlayer(target, amount);
             target.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     Objects.requireNonNull(commandsSection.getString("give.received"))
-                            .replace("%amount%", String.valueOf(amount))
+                            .replace("%amount%", amountFormatted)
                             .replace("%sender_player%", sender.getName())));
         }
     }
@@ -113,14 +118,17 @@ public class PlayerCommands extends BaseCommand {
     @Subcommand("target amount")
     @Syntax("<target> <amount> &e - Give target player money")
     @CommandPermission("orbital.operator")
-    public void onSetBal(CommandSender sender, String[] args) {
-        Player target = Bukkit.getPlayer(args[0]);
-        if(target == null) {
+    public void onSetBal(CommandSender sender, OnlinePlayer targetOnlinePlayer, String[] args) {
+        if(targetOnlinePlayer == null) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    Objects.requireNonNull(commandsSection.getString("set-balance.target-not-specified"))));
             return;
         }
+        Player target = targetOnlinePlayer.getPlayer();
+
         double amount;
         try {
-            amount = Double.parseDouble(args[1]);
+            amount = Double.parseDouble(args[0]);
             // Amount must be positive
             if(amount < 0) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
